@@ -3,6 +3,7 @@
 /* tailwind css */
 @import "tailwindcss";
 
+
 * {
   font-family: "Outfit", sans-serif;
 }
@@ -12,4 +13,5 @@
   --text-course-details-heading-larger: 44px;
   --text-home-heading-larger: 48px;
   --text-home-heading-small: 28px;
+  --my-grid-cols: repeat(auto-fit, minmax(200px, 1fr))
 }
