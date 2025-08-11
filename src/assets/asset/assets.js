@@ -219,6 +219,7 @@ export const dummyCourses = [
         "coursePrice": 49.99,
         "isPublished": true,
         "discount": 20,
+        "teacherName": "Donald Knuth",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -292,6 +293,7 @@ export const dummyCourses = [
         "coursePrice": 79.99,
         "isPublished": true,
         "discount": 15,
+        "teacherName": "John Carmack",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -364,6 +366,7 @@ export const dummyCourses = [
         "coursePrice": 69.99,
         "isPublished": true,
         "discount": 15,
+        "teacherName": "John Carmack",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -430,6 +433,7 @@ export const dummyCourses = [
         "coursePrice": 99.99,
         "isPublished": true,
         "discount": 25,
+        "teacherName": "Robert C. Martin",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -496,6 +500,7 @@ export const dummyCourses = [
         "coursePrice": 69.99,
         "isPublished": true,
         "discount": 20,
+        "teacherName": "Andrew Ng",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -561,6 +566,7 @@ export const dummyCourses = [
         "coursePrice": 89.99,
         "isPublished": true,
         "discount": 20,
+        "teacherName": "Barbara Liskov",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -634,6 +640,7 @@ export const dummyCourses = [
         "coursePrice": 89.99,
         "isPublished": true,
         "discount": 30,
+        "teacherName": "Khan Academy",
         "courseContent": [
             {
                 "chapterId": "chapter1",
@@ -699,6 +706,7 @@ export const dummyCourses = [
         "coursePrice": 59.99,
         "isPublished": true,
         "discount": 15,
+        "teacherName": "Quincy Larson ",
         "courseContent": [
             {
                 "chapterId": "chapter1",
