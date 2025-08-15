@@ -9,6 +9,7 @@ export const AppContextProvider = ({ children }) => {
     const currency = import.meta.env.VITE_CURRENCY;
     const [allCourses, setAllCourses] = useState([]);
     const [isEducator, setIsEducator] = useState(true);
+    const [enrolledCourses, setEnrolledCourses] = useState([]);
     const navigate = useNavigate();
 
 
@@ -16,9 +17,7 @@ export const AppContextProvider = ({ children }) => {
     const fetchAllCourses = async () => {
         setAllCourses(dummyCourses)
     }
-    useEffect(() => {
-        fetchAllCourses()
-    }, [])
+
 
     // Function to calculate average rating of course
     const calculateRating = (course) => {
@@ -35,25 +34,36 @@ export const AppContextProvider = ({ children }) => {
     // Function to Calculate Course Chapter Time.
     const calculateChapterTime = (chapter) => {
         let time = 0;
-        chapter.chapterContent.map((lecture)=> time += lecture.lectureDuration);
-        return humanizeDuration(time * 60 * 1000, {units : ["h", "m"]})
+        chapter.chapterContent.map((lecture) => time += lecture.lectureDuration);
+        return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] })
     }
     // Function to Calculate Course Duration
     const calculateCourseDuration = (course) => {
         let time = 0;
         course.courseContent.map((chapter) => chapter.chapterContent.map((lecture) => time += lecture.lectureDuration))
-        return humanizeDuration(time * 60 * 1000, {units : ["h", "m"]})
+        return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] })
     }
     // Function to Calculate to number of lectures in the course.
     const calculateNumberOfLectures = (course) => {
         let totalLectures = 0;
         course.courseContent.forEach(chapter => {
-            if(Array.isArray(chapter.chapterContent)) {
+            if (Array.isArray(chapter.chapterContent)) {
                 totalLectures += chapter.chapterContent.length;
             }
         });
-        return totalLectures; 
+        return totalLectures;
     }
+
+    // Fetch User Enrolled Courses
+    const fetchUserEnrolledCourses = async () => {
+        setEnrolledCourses(dummyCourses)
+    }
+
+    useEffect(() => {
+        fetchAllCourses()
+        fetchUserEnrolledCourses()
+    }, [])
+
     const userInfo = {
         currency,
         allCourses,
@@ -63,7 +73,8 @@ export const AppContextProvider = ({ children }) => {
         setIsEducator,
         calculateChapterTime,
         calculateCourseDuration,
-        calculateNumberOfLectures
+        calculateNumberOfLectures,
+        enrolledCourses
     }
     return (
         <AppContext.Provider value={userInfo}>
