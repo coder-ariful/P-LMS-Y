@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import Navbar from '../../components/educator/Navbar';
 import Sidebar from '../../components/educator/Sidebar';
+import Footer from '../../components/educator/Footer';
 
 const Educator = () => {
     return (
@@ -13,6 +14,7 @@ const Educator = () => {
                     {<Outlet></Outlet>}
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

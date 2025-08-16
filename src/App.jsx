@@ -82,7 +82,7 @@ const App = () => {
         <Route path='/loading/:path' element={<Loading />} />
         {/* nested router here. */}
         <Route path='/educator' element={<Educator />}>
-          <Route path='educator' element={<DashBroad />} />
+          <Route path='/educator' element={<DashBroad />} />
           <Route path='add-course' element={<AddCourse />} />
           <Route path='my-courses' element={<MyCourses />} />
           <Route path='student-enrolled' element={<StudentsEnrolled />} />
