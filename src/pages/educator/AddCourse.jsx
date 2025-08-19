@@ -23,9 +23,9 @@ const AddCourse = () => {
     });
 
     const handleChapter = (action, chapterId) => {
-        if(action === 'add') {
+        if (action === 'add') {
             const title = prompt("Enter Chapter Name:")
-            if(title) {
+            if (title) {
                 const newChapter = {
                     chapterId: uniqid(),
                     chapterTitle: title,
@@ -35,32 +35,59 @@ const AddCourse = () => {
                 };
                 setChapters([...chapters, newChapter])
             }
-            else if(action === 'remove') {
-                setChapters(chapters.filter((chapter) => chapter.chapterId !== chapterId));
-            }
-            else if(action === 'toggle') {
-                setChapters(
-                    chapters.map((chapter) => chapter.chapterId === chapterId ? { ...chapter, collapsed: !chapter.collapse} : chapter )
+        }
+        else if (action === 'remove') {
+            setChapters(chapters.filter((chapter) => chapter.chapterId !== chapterId));
+        }
+        else if (action === 'toggle') {
+            setChapters(
+                chapters.map(
+                    (chapter) => chapter.chapterId === chapterId ? { ...chapter, collapsed: !chapter.collapsed } : chapter
                 )
-            }
+            )
         }
     }
 
     const handleLecture = (action, chapterId, lectureIndex) => {
-        if(action === 'add') {
+        if (action === 'add') {
             setCurrentChapterId(chapterId);
             setShowPopup(true);
         }
-        else if(action === 'remove') {
+        else if (action === 'remove') {
             setChapters(
                 chapters.map((chapter) => {
-                    if(chapter.chapterId === chapterId){
+                    if (chapter.chapterId === chapterId) {
                         chapter.chapterContent.splice(lectureIndex, 1)
                     }
                     return chapter
                 })
             )
         }
+    }
+
+    const addLecture = () => {
+        setChapters(
+            chapters.map((chapter) => {
+                if (chapter.chapterId === currentChapterId) {
+                    const newLecture = {
+                        ...lectureDetails, lectureOrder: chapter.chapterContent.length > 0 ? chapter.chapterContent.slice(-1)[0].lectureOrder + 1 : 1, lectureId: uniqid()
+                    };
+                    chapter.chapterContent.push(newLecture);
+                }
+                return chapter
+            })
+        );
+        setShowPopup(false);
+        setLectureDetails({
+            lectureTitle: '',
+            lectureDuration: '',
+            lectureUrl: '',
+            isPreviewFree: false,
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
     }
 
     useEffect(() => {
@@ -74,7 +101,7 @@ const AddCourse = () => {
 
     return (
         <div className=' min-h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0 '>
-            <form>
+            <form className='flex flex-col gap-4 max-w-md w-full text-gray-500' onSubmit={handleSubmit}>
                 <div className='flex flex-col gap-1'>
                     <p>Course Title</p>
                     <input type="text" onChange={(e) => setCourseTitle(e.target.value)} value={courseTitle} className='outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500' />
@@ -108,13 +135,20 @@ const AddCourse = () => {
                             <div key={chapterIndex} className='bg-white border rounded-lg mb-4'>
                                 <div className='flex justify-between items-center border-b p-4'>
                                     <div className='flex items-center'>
-                                        <img src={assets.dropdown_icon} width={14} alt="drop down icon" className={`mr-2 cursor-pointer transition-all ${chapter.collapse && "-rotate-90"}`} />
+                                        {/* <img src={assets.dropdown_icon} width={14} alt="drop down icon" className={`mr-2 cursor-pointer transition-all ${chapter.collapsed && "-rotate-90"}`} onClick={() => handleChapter('toggle', chapter.chapterId)} /> */}
+                                        <img
+                                            src={assets.dropdown_icon}
+                                            width={14}
+                                            alt="drop down icon"
+                                            className={`mr-2 cursor-pointer transition-all transform ${chapter.collapsed ? "-rotate-90" : "rotate-0"}`}
+                                            onClick={() => handleChapter('toggle', chapter.chapterId)}
+                                        />
                                         <span className='font-semibold'> {chapterIndex + 1} {chapter.chapterTitle} </span>
                                     </div>
                                     <span className='text-gray-500'> {chapter.chapterContent.length} Lectures </span>
-                                    <img src={assets.cross_icon} alt="cross icon" className='cursor-pointer' />
+                                    <img src={assets.cross_icon} alt="cross icon" className='cursor-pointer' onClick={() => handleChapter('remove', chapter.chapterId)} />
                                 </div>
-                                {!chapter.collapse && (
+                                {!chapter.collapsed && (
                                     <div className='p-4'>
                                         {
                                             chapter.chapterContent.map((lecture, lectureIndex) => (
@@ -126,14 +160,14 @@ const AddCourse = () => {
                                                 </div>
                                             ))
                                         }
-                                        <div className='inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2' onClick={( () => handleLecture('add', chapter.chapterId) )}> + Add Lecture</div>
+                                        <div className='inline-flex bg-gray-100 p-2 rounded cursor-pointer mt-2' onClick={(() => handleLecture('add', chapter.chapterId))}> + Add Lecture</div>
                                     </div>
                                 )}
                             </div>
                         ))
                     }
 
-                    <div className='flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer mt-4' onClick={ () => handleChapter('add')}> + Add Chapter</div>
+                    <div className='flex justify-center items-center bg-blue-100 p-2 rounded-lg cursor-pointer mt-4' onClick={() => handleChapter('add')}> + Add Chapter</div>
                     {
                         showPopup && (
                             <div className='fixed inset-0 flex items-center justify-center bg-[#1e2939cc] bg-opacity-50'>
@@ -160,10 +194,10 @@ const AddCourse = () => {
                                     <div className='mb-2 flex gap-2 items-center'>
                                         <p>Is Preview Free?</p>
                                         <input type="checkbox" className='mt-1 scale-125' value={lectureDetails.isPreviewFree} onChange={(e) => setLectureDetails({
-                                            ...lectureDetails, isPreviewFree: e.target.checked 
+                                            ...lectureDetails, isPreviewFree: e.target.checked
                                         })} />
                                     </div>
-                                    <button type='button' className='w-full  bg-blue-400 text-white px-4 py-2 rounded cursor-pointer'>Add</button>
+                                    <button type='button' className='w-full  bg-blue-400 text-white px-4 py-2 rounded cursor-pointer' onClick={() => addLecture()}>Add</button>
                                     <img src={assets.cross_icon} alt="cross icon" onClick={() => setShowPopup(false)} className='absolute top-4 right-4 w-4 cursor-pointer' />
                                 </div>
                             </div>
